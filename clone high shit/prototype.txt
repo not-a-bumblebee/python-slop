@@ -1,0 +1,98 @@
+import os
+import json
+import datetime
+
+
+framePath = r"C:\Users\aznpa\Downloads\Clone High (2002) Season 1 S01 (480p AMZN.WEBDL x265 10bit AAC 2.0 EDGE2020)\Season 1\ep1 frames"
+getFrames = sorted(os.listdir(framePath))
+print("PATH IS:",getFrames[0])
+
+with open("test.json","r") as lib:
+    cloneLib = json.load(lib)
+
+for i in cloneLib:
+print("Json:",cloneLib[10])
+
+frameNumber= i.split("_")[-1][:-5]
+
+print("Frame number:",frameNumber)
+
+startTime =cloneLib[140]['startTime']
+endTime =cloneLib[140]['endTime']
+
+print("Start time:",startTime)
+
+frameToSec = int(frameNumber)/30
+
+print("Frame to second:",)
+
+a= datetime.timedelta(seconds=frameToSec)
+startTime = startTime.replace(",",".").strip()
+endTime = endTime.replace(",",".").strip()
+print(startTime)
+startTime = datetime.datetime.strptime(startTime,"%H:%M:%S.%f")
+startTime = datetime.timedelta(hours=startTime.hour, minutes=startTime.minute, seconds=startTime.second, microseconds=startTime.microsecond)
+endTime = datetime.datetime.strptime(endTime,"%H:%M:%S.%f")
+endTime = datetime.timedelta(hours=endTime.hour, minutes=endTime.minute, seconds=endTime.second, microseconds=endTime.microsecond)
+print("frame time:",a)
+print("start time:",startTime)
+print("end time:",endTime)
+
+
+print(a < startTime and a > endTime)
+
+def filterFunction(x, start,end):
+    frameNumber =  x.split("_")[-1][:-5]
+    frameToSec = int(frameNumber) / 30
+    frameDelta = datetime.timedelta(seconds=frameToSec)
+
+    # a = str(frameDelta)[:6]
+    # print("filter:",a)
+    # str(time)[:8] in str(frameDelta)
+
+    if(frameDelta>= start and frameDelta<=end):
+        return True
+
+    return False
+
+
+
+filteredShit = list(filter(lambda x:filterFunction(x,startTime,endTime),getFrames))
+print("Filtered Items:",len(filteredShit))
+
+output = []
+choice =  {}
+
+print(filteredShit)
+for i in filteredShit:
+    frameNumber = i.split("_")[-1][:-5]
+    frameToSec = int(frameNumber) / 30
+    frameDelta = (datetime.timedelta(seconds=frameToSec))
+    output.append([i,str(frameDelta)])
+
+    # choice[abs(startTime.microseconds- frameDelta.microseconds)]= i
+
+
+print("dickt:",choice)
+
+# print("The best match is:", choice[min(choice)])
+
+print("Possible matches for ",startTime,"and ",endTime,": ",output)
+#
+# print(str(b)[:9])
+
+# for i  in cloneLib:
+
+#Getting time stamp from the frame
+#find the frame that most suits the timestamp for the subtitle
+
+
+
+# filteredFrames = [x for x in getFrames if b in  int(x.split("_")[-1][:-5]) ]
+
+# for i in getFrames:
+#     frameNumber= i.split("_")[-1][:-5]
+#     frameToSec = int(frameNumber) / 30
+#     a = datetime.timedelta(seconds=frameToSec)
+
+jason = []
